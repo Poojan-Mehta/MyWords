@@ -27,7 +27,7 @@
                 <a href="{{ route('song.add') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><i class="fa fa-plus"> Compose</i></a>
             </div>
             <div class="mt-5">
-                <?php if(count($songs)>0){
+                <?php if(count($songs['data'])>0){
                     foreach ($songs['data'] as $key=> $song){ 
                         ?>                   
                         <div class="mb-4">  
@@ -44,13 +44,15 @@
                             </span>                                                                 
                         </div>                    
                     <?php } ?>
+                    <?php if(count($songs['data'])>0){ ?>
                         <div class="pagination mt-2 pull-right">
                         <?php foreach ($songs['links'] as $key => $pagination) { ?>
                             <a href="<?php echo $pagination['url']; ?>" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 m-1"><?php echo $pagination['label']; ?> </a>
                         <?php } ?>   
                         </div>
+                        <?php } ?>
                     <?php }else{ ?>
-                        <p>There are no any posts.</p>
+                        <p>Be brave and compose the song....</p>
                     <?php } ?>
             </div>
            

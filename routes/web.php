@@ -63,4 +63,6 @@ Route::middleware('auth')->group(function(){
     //profile
     Route::get('public_profile/{id}','ProfileController@publicProfile')->name('public.profile');
     Route::post('profile/subscribe','ProfileController@profileSubscribe')->name('profile.subscribe');
+    Route::get('myprofile','ProfileController@myProfile')->name('myprofile');
+    Route::post('updateprofile','ProfileController@updateProfile')->name('update.profile');
 });

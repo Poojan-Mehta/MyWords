@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="flex justify-center mt-5">
-        <div class="w-8/12 bg-white p-6 rounded-lg" style="background-image: url(/img/users/bg_default.jpg);height:200px;"> 
+        <div class="w-8/12 bg-white p-6 rounded-lg" style="background-image: url(/img/users/<?php echo $user['cover_photo']?>);height:200px;"> 
         
         </div>
     </div>
@@ -14,7 +14,7 @@
             <div class="">
                 <div class="flex justify-between">
                     <div class="profile_img">
-                        <img class="img" src="{{ asset('img/users/default.jpg') }}" width="75" height="75"/>
+                        <img class="img" src="{{ asset('img/users/') }}<?php echo '/'.$user['profile_photo']?>" width="75" height="75"/>
                     </div>
                     <div class="profile_content">
                         <div class="">
