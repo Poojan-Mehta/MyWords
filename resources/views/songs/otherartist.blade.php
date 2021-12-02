@@ -30,7 +30,7 @@
                     <?php }else{ ?>
                         <p>There are no any posts.</p>
                     <?php } ?>
-            </div>         
+            </div>                
         </div>        
     </div>
 </x-app-layout>
