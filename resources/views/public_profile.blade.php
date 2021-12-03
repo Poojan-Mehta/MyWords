@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="flex justify-center mt-5">
-        <div class="w-8/12 bg-white p-6 rounded-lg" style="background-image: url(/img/users/<?php echo $user['cover_photo']?>);height:200px;"> 
+        <div class="w-8/12 bg-white p-6 rounded-lg" style="background-image: url(/img/users/<?php echo $user['cover_photo']?>);height:200px;background-size:cover;"> 
         
         </div>
     </div>
@@ -28,7 +28,7 @@
                 <?php 
                     function searchForId($id, $array) {
                         foreach ($array as $key => $val) {
-                            if ($val['subscribe_to'] === $id) {
+                            if ($val['subscribe_from'] === auth()->id() && $val['subscribe_to'] === $id) {
                                 return true;
                                 break;
                             }

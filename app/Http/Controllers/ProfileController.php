@@ -15,7 +15,6 @@ class ProfileController extends Controller
 
     public function publicProfile($id){
         $user = User::find($id)->toArray();
-        //echo '<pre>'; print_r($user); exit;
         $data = ['user'=>$user];
 
         return view('public_profile',$data);
@@ -51,6 +50,11 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request){
         $user = User::find(auth()->id())->toArray();
+
+        $this->validate($request,[
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+        ]);
         
         $profile_photo = $user['profile_photo'];
         $cover_photo = $user['cover_photo'];
