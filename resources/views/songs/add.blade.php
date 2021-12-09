@@ -13,6 +13,13 @@
                 <form action="{{ route('song.store') }}" method="POST" class="mb-4">   
                     @csrf   
                     <div class="mb-4">
+                        <label for="tags"><b>Hashtags:</b></label>
+                        <select class="bg-gray-100 border-2 w-full p-4 rounded-lg select2" name="tags[]" multiple>
+                            <option value="songs">Songs</option>
+                            <option value="poems">Poems</option>
+                          </select>
+                    </div>
+                    <div class="mb-4">
                         <label for="song_name"><b>Poem title:</b></label>
                         <input name="song_name" id="song_name" class="bg-gray-100 border-2 w-full p-4 rounded-lg @error('song_name')
                         border-red-500
@@ -63,6 +70,23 @@
     <script type="text/javascript">
     $(window).on('load', function (){        
          $( '#song_description,#song_lyrics' ).ckeditor();
+    });
+
+    $(document).ready(function() {
+        $('.select2').select2({
+            tags: true
+        });
+    });
+
+    $(".select").select2({
+        tags: true,
+        createTag: function (params) {
+            return {
+            id: params.term,
+            text: params.term,
+            newOption: true
+            }
+        }
     });
         
     </script> 

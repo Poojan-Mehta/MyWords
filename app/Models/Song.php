@@ -13,7 +13,8 @@ class Song extends Model
         'song_name',
         'song_lyrics',
         'song_description',
-        'artist_id'
+        'artist_id',
+        'tags'
     ];    
 
     //protected $with = ['artist'];

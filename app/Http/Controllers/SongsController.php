@@ -5,21 +5,46 @@ namespace App\Http\Controllers;
 use App\Models\Song;
 use Illuminate\Http\Request;
 
+
 class SongsController extends Controller
 {
     //
-    public function index(){
-        $songs = Song::where('artist_id', '!=' , auth()->id())->with('artist')->orderBy('id','DESC')->paginate(3)->toArray();        
+    public function index(Request $request){
+
+        $search = '';
+        if($request->has('search')){
+            $search = $request->query('search');
+        }
+        $songs = Song::
+                where('artist_id', '!=' , auth()->id())
+                ->where('song_name', 'like', '%'.$request->query('search').'%')
+                ->with('artist')
+                ->orderBy('id','DESC')
+                ->paginate(3);
+                 
+        //dd($songs);
         return view('songs.otherartist',[
-            'songs' => $songs
+            'songs' => $songs,
+            'search'=> $search
         ]);
     }
 
-    public function mysongs(){
-        $songs = Song::where(['artist_id'=>auth()->id()])->orderBy('id','DESC')->paginate(3)->toArray();
+    public function mysongs(Request $request){
+        $search = '';
+        if($request->has('search')){
+            $search = $request->query('search');
+        }
+        $songs = Song::
+                where('artist_id', auth()->id())
+                ->where('song_name', 'like', '%'.$request->query('search').'%')
+                ->with('artist')
+                ->orderBy('id','DESC')
+                ->paginate(3);
+        //$songs = Song::where(['artist_id'=>auth()->id()])->orderBy('id','DESC')->paginate(3)->toArray();
         
         return view('songs.index',[
-            'songs' => $songs
+            'songs' => $songs,
+            'search'=> $search
         ]);
     }
 
@@ -33,12 +58,13 @@ class SongsController extends Controller
             'song_lyrics' => 'required',
             'song_description' => 'required'
         ]);
-
+        
         Song::create([
             'song_name' => $request->song_name,
             'song_lyrics' => $request->song_lyrics,
             'song_description' => $request->song_description,
-            'artist_id' => auth()->id()
+            'artist_id' => auth()->id(),
+            'tags' => !empty($request->tags) ? implode(',',$request->tags) : 'songs, poems'
         ]);
 
         return redirect()->route('my.songs')
@@ -48,6 +74,8 @@ class SongsController extends Controller
     public function edit(Song $song, $id)
     {   
         $song = Song::find($id);
+        $song['tags'] = explode(',',$song['tags']);
+        
         return view('songs.edit',[
             'song' => $song
         ]);
@@ -68,11 +96,16 @@ class SongsController extends Controller
             'song_name' => 'required',
             'song_lyrics' => 'required',
             'song_description' => 'required'
-        ]);
+        ]);        
 
-        $Song = Song::findOrNew($id);
-        $Song->fill($request->all());
-        $Song->save();
+        Song::where('id', $request->id)
+        ->update([
+            'song_name' => $request->song_name,
+            'song_lyrics' => $request->song_lyrics,
+            'song_description' => $request->song_description,
+            'artist_id' => auth()->id(),
+            'tags' => !empty($request->tags) ? implode(',',$request->tags) : 'songs, poems'
+        ]);
 
         return redirect()->route('my.songs')
                 ->withSuccess(__('Song edited successfully.'));

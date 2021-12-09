@@ -11,7 +11,15 @@
             </div>
             <div class="mt-5">
                 <form action="/song/update/{{ $song->id }}" method="POST" class="mb-4">   
-                    @csrf   
+                    @csrf
+                    <div class="mb-4">
+                        <label for="tags"><b>Hashtags:</b></label>
+                        <select class="bg-gray-100 border-2 w-full p-4 rounded-lg select2" name="tags[]" multiple>
+                            <?php  foreach($song['tags'] as $key => $tag){?>
+                                <option value="<?php echo $tag; ?>" selected><?php echo $tag; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
                     <div class="mb-4">
                         <label for="song_name"><b>Poem title:</b></label>
                         <input name="song_name" id="song_name" value="{{ $song->song_name }}" class="bg-gray-100 border-2 w-full p-4 rounded-lg @error('song_name')
@@ -64,6 +72,22 @@
     $(window).on('load', function (){        
          $( '#song_description,#song_lyrics' ).ckeditor();
     });
-        
+
+    $(document).ready(function() {
+        $('.select2').select2({
+            tags: true
+        });
+    });
+
+    $(".select").select2({
+        tags: true,
+        createTag: function (params) {
+            return {
+            id: params.term,
+            text: params.term,
+            newOption: true
+            }
+        }
+    });
     </script> 
 </x-app-layout>
